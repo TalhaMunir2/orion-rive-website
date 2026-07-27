@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useMemo, useState } from "react";
 
 import type { CaseStudy } from "../../lib/insights";
@@ -57,7 +58,7 @@ export default function CaseStudyExplorer({
             value={search}
             onChange={(event) => setSearch(event.target.value)}
             placeholder="Search by title or business outcome"
-            className="h-12 w-full rounded-xl border border-slate-300 bg-white pl-12 pr-4 text-sm outline-none transition placeholder:text-slate-400 focus:border-sky-600 focus:ring-4 focus:ring-sky-100"
+            className="h-12 w-full rounded-xl border border-slate-300 bg-white pl-12 pr-4 text-sm outline-none transition placeholder:text-slate-500 focus:border-sky-600 focus:ring-4 focus:ring-sky-100"
           />
         </label>
         <FilterSelect
@@ -182,8 +183,7 @@ function Visual({
   label: string;
 }) {
   if (imageUrl) {
-    // eslint-disable-next-line @next/next/no-img-element
-    return <img src={imageUrl} alt="" className="aspect-[16/9] w-full object-cover" />;
+    return <Image src={imageUrl} alt={`Case study cover for ${title}`} width={960} height={540} sizes="(min-width: 1280px) 384px, (min-width: 768px) 50vw, 100vw" className="aspect-[16/9] w-full object-cover" />;
   }
 
   const gradients = [

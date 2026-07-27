@@ -30,5 +30,6 @@ export type BlogPost = {
   category: string;
   tags?: string[];
   publishedAt: string;
+  updatedAt?: string;
   body?: PortableTextBlock[];
 };

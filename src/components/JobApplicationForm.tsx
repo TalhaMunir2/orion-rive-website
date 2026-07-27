@@ -73,7 +73,7 @@ export default function JobApplicationForm({
             {fields.map((field) => (
               <label key={field.name} className={field.name === "linkedinUrl" ? "sm:col-span-2" : ""}>
                 <span className="text-sm font-semibold text-slate-800">
-                  {field.label}{field.optional ? <span className="ml-1 font-normal text-slate-400">(optional)</span> : <span className="ml-1 text-sky-700">*</span>}
+                  {field.label}{field.optional ? <span className="ml-1 font-normal text-slate-500">(optional)</span> : <span className="ml-1 text-sky-700" aria-hidden="true">*</span>}
                 </span>
                 <input
                   name={field.name}
@@ -81,7 +81,7 @@ export default function JobApplicationForm({
                   autoComplete={field.autoComplete}
                   placeholder={field.placeholder}
                   required={!field.optional}
-                  className="mt-2 w-full rounded-xl border border-slate-300 px-4 py-3 text-[15px] outline-none transition placeholder:text-slate-400 focus:border-sky-600 focus:ring-4 focus:ring-sky-100"
+                  className="mt-2 w-full rounded-xl border border-slate-300 px-4 py-3 text-[15px] outline-none transition placeholder:text-slate-500 focus:border-sky-600 focus:ring-4 focus:ring-sky-100"
                 />
               </label>
             ))}
@@ -96,7 +96,7 @@ export default function JobApplicationForm({
               minLength={50}
               maxLength={5000}
               placeholder="Tell us why this opportunity is relevant to your experience and the contribution you want to make."
-              className="mt-2 w-full resize-y rounded-xl border border-slate-300 px-4 py-3 text-[15px] outline-none transition placeholder:text-slate-400 focus:border-sky-600 focus:ring-4 focus:ring-sky-100"
+              className="mt-2 w-full resize-y rounded-xl border border-slate-300 px-4 py-3 text-[15px] outline-none transition placeholder:text-slate-500 focus:border-sky-600 focus:ring-4 focus:ring-sky-100"
             />
           </label>
 

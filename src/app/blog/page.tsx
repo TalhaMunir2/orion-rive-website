@@ -2,6 +2,7 @@ import { groq } from "next-sanity";
 
 import type { BlogPost } from "../../../lib/insights";
 import { sanityClient } from "../../../lib/sanity";
+import { createPageMetadata } from "../../../lib/seo";
 import BlogExplorer from "../../components/BlogExplorer";
 import {
   CtaSection,
@@ -9,6 +10,11 @@ import {
 } from "../../components/marketing-shell";
 
 export const revalidate = 60;
+export const metadata = createPageMetadata({
+  title: "Enterprise Technology Insights | Orion Rive",
+  description: "Practical guidance for technology leaders on ServiceNow, responsible AI, cloud platforms, automation, and enterprise operating models.",
+  path: "/blog",
+});
 
 const query = groq`
   *[_type == "blogPost" && defined(slug.current)] | order(publishedAt desc) {

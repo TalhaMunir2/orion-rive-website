@@ -6,6 +6,7 @@ import { notFound } from "next/navigation";
 
 import type { BlogPost } from "../../../../lib/insights";
 import { sanityClient } from "../../../../lib/sanity";
+import { absoluteUrl, createPageMetadata, seoConfig, seoTitle } from "../../../../lib/seo";
 import { CtaSection } from "../../../components/marketing-shell";
 
 export const revalidate = 60;
@@ -20,6 +21,7 @@ const detailQuery = groq`
     category,
     tags,
     publishedAt,
+    "updatedAt": _updatedAt,
     body
   }
 `;
@@ -39,10 +41,13 @@ export async function generateMetadata({
     slug: params.slug,
   });
   if (!post) return {};
-  return {
-    title: `${post.title} | Orion Rive Insights`,
-    description: post.excerpt,
-  };
+  return createPageMetadata({
+    title: seoTitle(post.title),
+    description: post.excerpt.slice(0, 157),
+    path: `/blog/${post.slug}`,
+    image: post.imageUrl,
+    type: "article",
+  });
 }
 
 const components: PortableTextComponents = {
@@ -93,9 +98,28 @@ export default async function BlogPostPage({
   if (!post) notFound();
 
   const readingTime = estimateReadingTime(post);
+  const articleJsonLd = {
+    "@context": "https://schema.org", "@type": "Article",
+    headline: post.title, description: post.excerpt,
+    image: [absoluteUrl(post.imageUrl || seoConfig.defaultOgImage)],
+    datePublished: post.publishedAt, dateModified: post.updatedAt || post.publishedAt,
+    author: { "@type": "Organization", name: seoConfig.name, url: seoConfig.url },
+    publisher: { "@type": "Organization", name: seoConfig.name, logo: { "@type": "ImageObject", url: absoluteUrl(seoConfig.logo) } },
+    mainEntityOfPage: absoluteUrl(`/blog/${post.slug}`),
+  };
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org", "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: absoluteUrl("/") },
+      { "@type": "ListItem", position: 2, name: "Insights", item: absoluteUrl("/blog") },
+      { "@type": "ListItem", position: 3, name: post.title, item: absoluteUrl(`/blog/${post.slug}`) },
+    ],
+  };
 
   return (
     <main className="min-h-screen bg-white text-slate-950">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd).replace(/</g, "\\u003c") }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd).replace(/</g, "\\u003c") }} />
       <article>
         <header className="relative overflow-hidden bg-slate-950 text-white">
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_75%_15%,rgba(14,165,233,.2),transparent_30%)]" />

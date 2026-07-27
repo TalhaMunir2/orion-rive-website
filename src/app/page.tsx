@@ -2,6 +2,13 @@ import { groq } from "next-sanity";
 import Link from "next/link";
 
 import { sanityClient } from "../../lib/sanity";
+import { createPageMetadata } from "../../lib/seo";
+
+export const metadata = createPageMetadata({
+  title: "Enterprise Automation, AI & ServiceNow | Orion Rive",
+  description: "Modernize enterprise operations with ServiceNow, responsible AI, cloud platforms, automation, and custom software from Orion Rive.",
+  path: "/",
+});
 
 export const revalidate = 60;
 

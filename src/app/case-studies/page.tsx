@@ -2,6 +2,7 @@ import { groq } from "next-sanity";
 
 import type { CaseStudy } from "../../../lib/insights";
 import { sanityClient } from "../../../lib/sanity";
+import { createPageMetadata } from "../../../lib/seo";
 import CaseStudyExplorer from "../../components/CaseStudyExplorer";
 import {
   CtaSection,
@@ -10,6 +11,11 @@ import {
 } from "../../components/marketing-shell";
 
 export const revalidate = 60;
+export const metadata = createPageMetadata({
+  title: "Enterprise Transformation Case Studies | Orion Rive",
+  description: "See how enterprises improve service delivery, automate operations, modernize cloud platforms, and deploy responsible AI with Orion Rive.",
+  path: "/case-studies",
+});
 
 const query = groq`
   *[_type == "caseStudy" && defined(slug.current)] | order(title asc) {

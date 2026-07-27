@@ -2,10 +2,16 @@ import { groq } from "next-sanity";
 
 import type { JobOpening } from "../../../lib/careers";
 import { sanityClient } from "../../../lib/sanity";
+import { createPageMetadata } from "../../../lib/seo";
 import CareersExplorer from "../../components/CareersExplorer";
 import { PageHero, PrimaryButton } from "../../components/marketing-shell";
 
 export const revalidate = 60;
+export const metadata = createPageMetadata({
+  title: "Enterprise Technology Careers | Orion Rive",
+  description: "Explore careers in ServiceNow consulting, responsible AI, cloud engineering, and enterprise software delivery at Orion Rive.",
+  path: "/careers",
+});
 
 const jobsQuery = groq`
   *[_type == "jobOpening" && isActive == true && defined(slug.current)]

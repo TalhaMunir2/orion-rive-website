@@ -1,6 +1,8 @@
 import { groq } from "next-sanity";
+import Image from "next/image";
 
 import { sanityClient, urlFor } from "../../../lib/sanity";
+import { createPageMetadata } from "../../../lib/seo";
 import {
   CtaSection,
   PageHero,
@@ -8,6 +10,11 @@ import {
 } from "../../components/marketing-shell";
 
 export const revalidate = 60;
+export const metadata = createPageMetadata({
+  title: "About Our Enterprise Technology Firm | Orion Rive",
+  description: "Meet Orion Rive, an enterprise consulting firm helping technology leaders modernize operations through platforms, AI, cloud, and engineering.",
+  path: "/about",
+});
 
 type TeamMember = {
   _id: string;
@@ -178,14 +185,16 @@ export default async function AboutPage() {
                   className="overflow-hidden rounded-2xl border border-white/10 bg-white/[0.05] transition hover:-translate-y-1 hover:border-sky-400/30"
                 >
                   {member.photo ? (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img
+                    <Image
                       src={urlFor(member.photo)
                         .width(720)
                         .height(560)
                         .fit("crop")
                         .url()}
-                      alt={member.name}
+                      alt={`${member.name}, ${member.role || "Orion Rive leadership team member"}`}
+                      width={720}
+                      height={560}
+                      sizes="(min-width: 1024px) 384px, (min-width: 640px) 50vw, 100vw"
                       className="aspect-[4/3] w-full object-cover"
                     />
                   ) : (

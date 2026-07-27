@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useMemo, useState } from "react";
 
 import type { BlogPost } from "../../lib/insights";
@@ -74,8 +75,7 @@ export default function BlogExplorer({ posts }: { posts: BlogPost[] }) {
             className="group overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:border-sky-200 hover:shadow-xl"
           >
             {post.imageUrl ? (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img src={post.imageUrl} alt="" className="aspect-[16/9] w-full object-cover" />
+              <Image src={post.imageUrl} alt={`Editorial cover for ${post.title}`} width={960} height={540} sizes="(min-width: 1280px) 384px, (min-width: 768px) 50vw, 100vw" className="aspect-[16/9] w-full object-cover" />
             ) : (
               <div className={`relative aspect-[16/9] overflow-hidden bg-gradient-to-br ${index % 2 ? "from-blue-950 via-slate-900 to-cyan-700" : "from-slate-950 via-blue-950 to-sky-700"}`}>
                 <div className="absolute inset-0 opacity-15 [background-image:radial-gradient(circle_at_center,white_1px,transparent_1px)] [background-size:22px_22px]" />

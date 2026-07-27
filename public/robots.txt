@@ -1,0 +1,14 @@
+# *
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /admin/
+Disallow: /admin/*
+Disallow: /api/*
+Disallow: /test-supabase
+
+# Host
+Host: https://orion-rive-website.vercel.app
+
+# Sitemaps
+Sitemap: https://orion-rive-website.vercel.app/sitemap.xml

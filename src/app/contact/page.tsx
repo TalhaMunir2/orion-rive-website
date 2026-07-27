@@ -223,7 +223,7 @@ export default function ContactPage() {
                     aria-invalid={Boolean(errors[field.name])}
                     aria-describedby={`${field.name}-error`}
                     {...register(field.name)}
-                    className="mt-2 w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-[15px] text-slate-950 shadow-sm outline-none transition placeholder:text-slate-400 hover:border-slate-400 focus:border-sky-600 focus:ring-4 focus:ring-sky-100"
+                    className="mt-2 w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-[15px] text-slate-950 shadow-sm outline-none transition placeholder:text-slate-500 hover:border-slate-400 focus:border-sky-600 focus:ring-4 focus:ring-sky-100"
                   />
                   <p
                     id={`${field.name}-error`}
@@ -252,7 +252,7 @@ export default function ContactPage() {
                 aria-invalid={Boolean(errors.message)}
                 aria-describedby="message-error"
                 {...register("message")}
-                className="mt-2 w-full resize-y rounded-xl border border-slate-300 bg-white px-4 py-3 text-[15px] text-slate-950 shadow-sm outline-none transition placeholder:text-slate-400 hover:border-slate-400 focus:border-sky-600 focus:ring-4 focus:ring-sky-100"
+                className="mt-2 w-full resize-y rounded-xl border border-slate-300 bg-white px-4 py-3 text-[15px] text-slate-950 shadow-sm outline-none transition placeholder:text-slate-500 hover:border-slate-400 focus:border-sky-600 focus:ring-4 focus:ring-sky-100"
               />
               <p
                 id="message-error"

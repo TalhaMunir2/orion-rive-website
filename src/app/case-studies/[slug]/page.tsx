@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 
 import type { CaseStudy } from "../../../../lib/insights";
 import { sanityClient } from "../../../../lib/sanity";
+import { absoluteUrl, createPageMetadata, seoTitle } from "../../../../lib/seo";
 import {
   CtaSection,
 } from "../../../components/marketing-shell";
@@ -45,10 +46,12 @@ export async function generateMetadata({
     slug: params.slug,
   });
   if (!item) return {};
-  return {
-    title: `${item.title} | Orion Rive Case Study`,
-    description: item.summary,
-  };
+  return createPageMetadata({
+    title: seoTitle(item.title),
+    description: item.summary.slice(0, 157),
+    path: `/case-studies/${item.slug}`,
+    image: item.imageUrl,
+  });
 }
 
 export default async function CaseStudyDetailPage({
@@ -63,9 +66,18 @@ export default async function CaseStudyDetailPage({
   );
 
   if (!item) notFound();
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org", "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: absoluteUrl("/") },
+      { "@type": "ListItem", position: 2, name: "Case Studies", item: absoluteUrl("/case-studies") },
+      { "@type": "ListItem", position: 3, name: item.title, item: absoluteUrl(`/case-studies/${item.slug}`) },
+    ],
+  };
 
   return (
     <main className="min-h-screen bg-white text-slate-950">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd).replace(/</g, "\\u003c") }} />
       <section className="relative overflow-hidden bg-slate-950 text-white">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_20%,rgba(14,165,233,.2),transparent_30%)]" />
         <div className="relative mx-auto max-w-7xl px-6 py-20 sm:py-28 lg:px-8">

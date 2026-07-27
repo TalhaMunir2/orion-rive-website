@@ -7,6 +7,7 @@ import {
   serviceCategories,
 } from "../../../lib/service-catalog";
 import { sanityClient } from "../../../lib/sanity";
+import { createPageMetadata } from "../../../lib/seo";
 import {
   ArrowIcon,
   CtaSection,
@@ -15,6 +16,11 @@ import {
 } from "../../components/marketing-shell";
 
 export const revalidate = 60;
+export const metadata = createPageMetadata({
+  title: "ServiceNow, AI & Cloud Services | Orion Rive",
+  description: "Explore enterprise ServiceNow, AI, cloud, automation, integration, and custom development services designed for measurable business outcomes.",
+  path: "/services",
+});
 
 const servicesQuery = groq`
   *[

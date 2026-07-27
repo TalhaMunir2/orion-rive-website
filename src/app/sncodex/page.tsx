@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { createPageMetadata } from "../../../lib/seo";
 
 import {
   ArrowIcon,
@@ -6,6 +7,12 @@ import {
   PageHero,
   PrimaryButton,
 } from "../../components/marketing-shell";
+
+export const metadata = createPageMetadata({
+  title: "ServiceNow Center of Excellence | SNCodeX",
+  description: "Build a governed, scalable ServiceNow platform with SNCodeX expertise in implementation, integration, automation, architecture, and adoption.",
+  path: "/sncodex",
+});
 
 export default function SNCodeXPage() {
   return (

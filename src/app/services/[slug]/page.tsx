@@ -1,4 +1,5 @@
 import { groq } from "next-sanity";
+import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
@@ -7,6 +8,7 @@ import {
   serviceCategories,
 } from "../../../../lib/service-catalog";
 import { sanityClient } from "../../../../lib/sanity";
+import { createPageMetadata, seoTitle } from "../../../../lib/seo";
 import {
   ArrowIcon,
   CtaSection,
@@ -33,6 +35,16 @@ const serviceQuery = groq`
     businessOutcomes
   }
 `;
+
+export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
+  const service = await sanityClient.fetch<SanityService | null>(serviceQuery, { slug: params.slug });
+  if (!service) return {};
+  return createPageMetadata({
+    title: seoTitle(`${service.title} Services`),
+    description: (service.shortDescription || service.fullDescription || `Explore Orion Rive's ${service.title} capability for secure, scalable enterprise transformation.`).slice(0, 157),
+    path: `/services/${service.slug}`,
+  });
+}
 
 export default async function ServiceDetailPage({
   params,

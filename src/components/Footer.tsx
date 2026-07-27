@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 
 const quickLinks = [
   ["Home", "/"],
@@ -18,9 +19,7 @@ export default function Footer() {
         <div className="grid gap-12 border-b border-white/10 pb-12 md:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1fr_1fr]">
           <div className="max-w-sm">
             <Link href="/" className="inline-flex items-center gap-3">
-              <span className="grid h-11 w-11 place-items-center rounded-xl bg-gradient-to-br from-sky-400 to-blue-600 text-sm font-bold text-white">
-                OR
-              </span>
+              <Image src="/images/orion-rive-logo.png" alt="Orion Rive logo" width={48} height={48} sizes="48px" className="h-12 w-12 object-contain" />
               <span>
                 <span className="block text-base font-bold text-white">
                   ORION RIVE

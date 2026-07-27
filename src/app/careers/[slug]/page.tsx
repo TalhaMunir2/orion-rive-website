@@ -6,6 +6,7 @@ import { notFound } from "next/navigation";
 
 import type { JobOpening } from "../../../../lib/careers";
 import { sanityClient } from "../../../../lib/sanity";
+import { createPageMetadata, seoTitle } from "../../../../lib/seo";
 import JobApplicationForm from "../../../components/JobApplicationForm";
 
 export const revalidate = 60;
@@ -33,10 +34,11 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
   const job = await sanityClient.fetch<JobOpening | null>(jobQuery, { slug: params.slug });
   if (!job) return {};
-  return {
-    title: `${job.title} | Careers at Orion Rive`,
-    description: `Join Orion Rive as ${job.title} in ${job.location}. Explore the role, requirements, and apply online.`,
-  };
+  return createPageMetadata({
+    title: seoTitle(job.title, " | Orion Rive Careers"),
+    description: `Join Orion Rive as ${job.title} in ${job.location}. Explore the responsibilities, requirements, and submit your application online.`.slice(0, 157),
+    path: `/careers/${job.slug}`,
+  });
 }
 
 const portableTextComponents: PortableTextComponents = {

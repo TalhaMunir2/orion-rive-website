@@ -1,8 +1,9 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const navigation = [
   { label: "Home", href: "/" },
@@ -18,31 +19,7 @@ const navigation = [
 function Brand() {
   return (
     <span className="inline-flex items-center gap-3">
-      <svg viewBox="0 0 44 44" aria-hidden="true" className="h-10 w-10">
-        <defs>
-          <linearGradient id="navbar-brand" x1="4" y1="4" x2="40" y2="40">
-            <stop stopColor="#38bdf8" />
-            <stop offset="1" stopColor="#2563eb" />
-          </linearGradient>
-        </defs>
-        <rect width="44" height="44" rx="12" fill="url(#navbar-brand)" />
-        <ellipse
-          cx="22"
-          cy="22"
-          rx="14"
-          ry="7"
-          fill="none"
-          stroke="white"
-          strokeWidth="1.5"
-          transform="rotate(-35 22 22)"
-          opacity=".72"
-        />
-        <circle cx="32.5" cy="13.5" r="2.4" fill="white" />
-        <path
-          d="M15.5 27V17h4.2c3.2 0 5.3 1.9 5.3 5s-2.1 5-5.3 5h-4.2Zm3-2.5h1c1.5 0 2.4-.8 2.4-2.5s-.9-2.5-2.4-2.5h-1v5Z"
-          fill="white"
-        />
-      </svg>
+      <Image src="/images/orion-rive-logo.png" alt="Orion Rive logo" width={48} height={48} sizes="44px" className="h-11 w-11 object-contain" />
       <span>
         <span className="block text-base font-bold tracking-[-0.02em] text-slate-950">
           ORION RIVE
@@ -58,6 +35,8 @@ function Brand() {
 export default function Navbar() {
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
+  const menuButtonRef = useRef<HTMLButtonElement>(null);
+  const drawerRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
     setIsOpen(false);
@@ -65,8 +44,28 @@ export default function Navbar() {
 
   useEffect(() => {
     document.body.style.overflow = isOpen ? "hidden" : "";
+    if (!isOpen) return () => { document.body.style.overflow = ""; };
+
+    const focusable = drawerRef.current?.querySelectorAll<HTMLElement>(
+      'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])',
+    );
+    focusable?.[0]?.focus();
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setIsOpen(false);
+        menuButtonRef.current?.focus();
+      }
+      if (event.key === "Tab" && focusable?.length) {
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+        if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
+        else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
+      }
+    };
+    document.addEventListener("keydown", handleKeyDown);
     return () => {
       document.body.style.overflow = "";
+      document.removeEventListener("keydown", handleKeyDown);
     };
   }, [isOpen]);
 
@@ -130,6 +129,7 @@ export default function Navbar() {
           </Link>
 
           <button
+            ref={menuButtonRef}
             type="button"
             aria-expanded={isOpen}
             aria-controls="mobile-navigation"
@@ -158,20 +158,21 @@ export default function Navbar() {
         </div>
       </header>
 
-      <div
-        aria-hidden="true"
+      {isOpen && <>
+      <button
+        type="button"
+        aria-label="Close navigation menu"
         onClick={() => setIsOpen(false)}
-        className={`fixed inset-0 z-40 bg-slate-950/45 backdrop-blur-sm transition-opacity duration-300 xl:hidden ${
-          isOpen ? "opacity-100" : "pointer-events-none opacity-0"
-        }`}
+        className="fixed inset-0 z-40 bg-slate-950/45 backdrop-blur-sm xl:hidden"
       />
 
       <aside
+        ref={drawerRef}
         id="mobile-navigation"
+        role="dialog"
+        aria-modal="true"
         aria-label="Mobile navigation"
-        className={`fixed bottom-0 right-0 top-20 z-40 flex w-full max-w-sm flex-col border-l border-slate-200 bg-white shadow-2xl transition-transform duration-300 ease-out xl:hidden ${
-          isOpen ? "translate-x-0" : "translate-x-full"
-        }`}
+        className="fixed bottom-0 right-0 top-20 z-40 flex w-full max-w-sm flex-col border-l border-slate-200 bg-white shadow-2xl xl:hidden"
       >
         <nav className="flex-1 overflow-y-auto px-5 py-6">
           <p className="px-3 text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400">
@@ -220,6 +221,7 @@ export default function Navbar() {
           </Link>
         </div>
       </aside>
+      </>}
     </>
   );
 }

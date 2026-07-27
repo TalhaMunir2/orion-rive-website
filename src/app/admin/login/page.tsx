@@ -145,7 +145,7 @@ export default function AdminLoginPage() {
                   autoComplete="email"
                   required
                   placeholder="admin@orionrive.com"
-                  className="mt-2 w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-[15px] text-slate-950 shadow-sm outline-none transition placeholder:text-slate-400 hover:border-slate-400 focus:border-sky-600 focus:ring-4 focus:ring-sky-100"
+                  className="mt-2 w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-[15px] text-slate-950 shadow-sm outline-none transition placeholder:text-slate-500 hover:border-slate-400 focus:border-sky-600 focus:ring-4 focus:ring-sky-100"
                 />
               </div>
 
@@ -169,7 +169,7 @@ export default function AdminLoginPage() {
                   autoComplete="current-password"
                   required
                   placeholder="Enter your password"
-                  className="mt-2 w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-[15px] text-slate-950 shadow-sm outline-none transition placeholder:text-slate-400 hover:border-slate-400 focus:border-sky-600 focus:ring-4 focus:ring-sky-100"
+                  className="mt-2 w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-[15px] text-slate-950 shadow-sm outline-none transition placeholder:text-slate-500 hover:border-slate-400 focus:border-sky-600 focus:ring-4 focus:ring-sky-100"
                 />
               </div>
 
