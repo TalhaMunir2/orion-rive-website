@@ -1,6 +1,12 @@
 "use client";
 
 import { FormEvent, useState } from "react";
+import {
+  jobApplicationFieldsSchema,
+  MAX_RESUME_SIZE,
+  PDF_MIME_TYPE,
+  type JobApplicationFields,
+} from "../../lib/job-application-schema";
 
 const fields = [
   { name: "fullName", label: "Full Name", type: "text", autoComplete: "name", placeholder: "Your full name", optional: false },
@@ -20,16 +26,52 @@ export default function JobApplicationForm({
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
   const [fileName, setFileName] = useState("");
+  const [fieldErrors, setFieldErrors] = useState<
+    Partial<Record<keyof JobApplicationFields | "resume", string>>
+  >({});
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setError(null);
     setSuccess(false);
-    setIsSubmitting(true);
 
     const form = event.currentTarget;
     const formData = new FormData(form);
     formData.set("jobSlug", jobSlug);
+    const values = {
+      jobSlug,
+      fullName: String(formData.get("fullName") || ""),
+      email: String(formData.get("email") || ""),
+      phone: String(formData.get("phone") || ""),
+      linkedinUrl: String(formData.get("linkedinUrl") || ""),
+      coverLetter: String(formData.get("coverLetter") || ""),
+    };
+    const validation = jobApplicationFieldsSchema.safeParse(values);
+    const resume = formData.get("resume");
+    const nextErrors: Partial<Record<keyof JobApplicationFields | "resume", string>> = {};
+
+    if (!validation.success) {
+      for (const issue of validation.error.issues) {
+        const field = issue.path[0] as keyof JobApplicationFields;
+        nextErrors[field] ||= issue.message;
+      }
+    }
+    if (!(resume instanceof File) || resume.size === 0) {
+      nextErrors.resume = "Select a PDF resume to continue.";
+    } else if (resume.type !== PDF_MIME_TYPE && !resume.name.toLowerCase().endsWith(".pdf")) {
+      nextErrors.resume = "Resume must be a PDF file.";
+    } else if (resume.size > MAX_RESUME_SIZE) {
+      nextErrors.resume = "Resume must be 5 MB or smaller.";
+    }
+
+    if (Object.keys(nextErrors).length) {
+      setFieldErrors(nextErrors);
+      setError("Review the highlighted fields and try again.");
+      return;
+    }
+
+    setFieldErrors({});
+    setIsSubmitting(true);
 
     try {
       const response = await fetch("/api/careers/apply", {
@@ -40,6 +82,7 @@ export default function JobApplicationForm({
       if (!response.ok) throw new Error(result.error || "Unable to submit your application.");
       form.reset();
       setFileName("");
+      setFieldErrors({});
       setSuccess(true);
     } catch (submissionError) {
       setError(
@@ -68,52 +111,64 @@ export default function JobApplicationForm({
           </div>
         </div>
 
-        <form onSubmit={handleSubmit} className="rounded-3xl border border-slate-200 bg-white p-6 shadow-[0_24px_70px_-32px_rgba(15,23,42,.3)] sm:p-10">
+        <form onSubmit={handleSubmit} noValidate className="rounded-3xl border border-slate-200 bg-white p-6 shadow-[0_24px_70px_-32px_rgba(15,23,42,.3)] sm:p-10">
           <div className="grid gap-5 sm:grid-cols-2">
             {fields.map((field) => (
-              <label key={field.name} className={field.name === "linkedinUrl" ? "sm:col-span-2" : ""}>
+              <label key={field.name} htmlFor={`application-${field.name}`} className={field.name === "linkedinUrl" ? "sm:col-span-2" : ""}>
                 <span className="text-sm font-semibold text-slate-800">
                   {field.label}{field.optional ? <span className="ml-1 font-normal text-slate-500">(optional)</span> : <span className="ml-1 text-sky-700" aria-hidden="true">*</span>}
                 </span>
                 <input
+                  id={`application-${field.name}`}
                   name={field.name}
                   type={field.type}
                   autoComplete={field.autoComplete}
                   placeholder={field.placeholder}
                   required={!field.optional}
-                  className="mt-2 w-full rounded-xl border border-slate-300 px-4 py-3 text-[15px] outline-none transition placeholder:text-slate-500 focus:border-sky-600 focus:ring-4 focus:ring-sky-100"
+                  aria-invalid={Boolean(fieldErrors[field.name])}
+                  aria-describedby={`application-${field.name}-error`}
+                  className="mt-2 w-full rounded-xl border border-slate-300 px-4 py-3 text-[15px] outline-none placeholder:text-slate-500 focus:border-sky-600 focus:ring-4 focus:ring-sky-100 aria-[invalid=true]:border-red-500 aria-[invalid=true]:ring-4 aria-[invalid=true]:ring-red-50"
                 />
+                <span id={`application-${field.name}-error`} className="mt-1.5 block min-h-5 text-xs font-medium text-red-600">{fieldErrors[field.name]}</span>
               </label>
             ))}
           </div>
 
-          <label className="mt-5 block">
+          <label htmlFor="application-coverLetter" className="mt-5 block">
             <span className="text-sm font-semibold text-slate-800">Cover Letter / Message <span className="text-sky-700">*</span></span>
             <textarea
+              id="application-coverLetter"
               name="coverLetter"
               rows={7}
               required
               minLength={50}
               maxLength={5000}
               placeholder="Tell us why this opportunity is relevant to your experience and the contribution you want to make."
-              className="mt-2 w-full resize-y rounded-xl border border-slate-300 px-4 py-3 text-[15px] outline-none transition placeholder:text-slate-500 focus:border-sky-600 focus:ring-4 focus:ring-sky-100"
+              aria-invalid={Boolean(fieldErrors.coverLetter)}
+              aria-describedby="application-coverLetter-error"
+              className="mt-2 w-full resize-y rounded-xl border border-slate-300 px-4 py-3 text-[15px] outline-none placeholder:text-slate-500 focus:border-sky-600 focus:ring-4 focus:ring-sky-100 aria-[invalid=true]:border-red-500 aria-[invalid=true]:ring-4 aria-[invalid=true]:ring-red-50"
             />
+            <span id="application-coverLetter-error" className="mt-1.5 block min-h-5 text-xs font-medium text-red-600">{fieldErrors.coverLetter}</span>
           </label>
 
-          <label className="mt-5 block cursor-pointer rounded-2xl border border-dashed border-slate-300 bg-slate-50 p-6 text-center transition hover:border-sky-400 hover:bg-sky-50/50">
+          <label htmlFor="application-resume" className={`mt-5 block cursor-pointer rounded-2xl border border-dashed bg-slate-50 p-6 text-center hover:bg-sky-50/50 ${fieldErrors.resume ? "border-red-400 ring-4 ring-red-50" : "border-slate-300 hover:border-sky-400"}`}>
             <span className="mx-auto grid h-11 w-11 place-items-center rounded-xl bg-white text-sky-700 shadow-sm">↑</span>
             <span className="mt-3 block text-sm font-semibold text-slate-800">
               {fileName || "Upload your resume"}
             </span>
             <span className="mt-1 block text-xs text-slate-500">PDF only · maximum 5 MB</span>
             <input
+              id="application-resume"
               name="resume"
               type="file"
               accept="application/pdf,.pdf"
               required
+              aria-invalid={Boolean(fieldErrors.resume)}
+              aria-describedby="application-resume-error"
               className="sr-only"
               onChange={(event) => setFileName(event.target.files?.[0]?.name || "")}
             />
+            <span id="application-resume-error" className="mt-2 block min-h-5 text-xs font-medium text-red-600">{fieldErrors.resume}</span>
           </label>
 
           {error && <p role="alert" className="mt-5 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm font-medium text-red-700">{error}</p>}

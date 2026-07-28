@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useMemo, useState } from "react";
 
 import type { BlogPost } from "../../lib/insights";
+import EmptyState from "./EmptyState";
 
 const categories = [
   "All categories",
@@ -110,20 +111,11 @@ export default function BlogExplorer({ posts }: { posts: BlogPost[] }) {
       </div>
 
       {filtered.length === 0 && (
-        <div className="mt-8 rounded-2xl border border-dashed border-slate-300 bg-white p-12 text-center">
-          <p className="font-semibold">No articles match these filters.</p>
-          <button
-            type="button"
-            onClick={() => {
-              setSearch("");
-              setCategory("All categories");
-              setTag("All tags");
-            }}
-            className="mt-3 text-sm font-semibold text-sky-700"
-          >
-            Clear filters
-          </button>
-        </div>
+        <div className="mt-8"><EmptyState
+          title="No insights match your filters"
+          description="Try a broader search, another category, or clear the current filters to view all published perspectives."
+          action={<button type="button" onClick={() => { setSearch(""); setCategory("All categories"); setTag("All tags"); }} className="rounded-xl bg-slate-950 px-4 py-2.5 text-sm font-semibold text-white hover:bg-sky-700">Clear filters</button>}
+        /></div>
       )}
     </>
   );

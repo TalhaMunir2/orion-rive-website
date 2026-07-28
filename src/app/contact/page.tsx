@@ -117,7 +117,7 @@ export default function ContactPage() {
   };
 
   return (
-    <main className="min-h-screen bg-[#f6f8fb] text-slate-950">
+    <main className="min-h-screen bg-[#f7f9fc] text-slate-950">
       <section className="relative overflow-hidden bg-slate-950">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_85%_15%,rgba(14,165,233,0.16),transparent_32%),radial-gradient(circle_at_15%_100%,rgba(37,99,235,0.14),transparent_35%)]" />
         <div className="relative mx-auto max-w-7xl px-6 py-16 sm:py-20 lg:px-8">
@@ -125,7 +125,7 @@ export default function ContactPage() {
             <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-sky-400/20 bg-sky-400/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.16em] text-sky-300">
               Talk to an enterprise specialist
             </div>
-            <h1 className="text-balance text-4xl font-semibold tracking-[-0.035em] text-white sm:text-5xl lg:text-6xl">
+            <h1 className="text-balance text-4xl font-semibold leading-[1.07] tracking-[-0.045em] text-white sm:text-6xl lg:text-7xl">
               Turn your next technology initiative into measurable impact.
             </h1>
             <p className="mt-6 max-w-2xl text-lg leading-8 text-slate-300">

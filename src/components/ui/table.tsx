@@ -12,7 +12,7 @@ export function TableBody({ className, ...props }: HTMLAttributes<HTMLTableSecti
   return <tbody className={cn("divide-y divide-slate-100", className)} {...props} />;
 }
 export function TableRow({ className, ...props }: HTMLAttributes<HTMLTableRowElement>) {
-  return <tr className={cn("transition hover:bg-slate-50/80", className)} {...props} />;
+  return <tr className={cn("transition duration-200 hover:bg-slate-50/80", className)} {...props} />;
 }
 export function TableHead({ className, ...props }: HTMLAttributes<HTMLTableCellElement>) {
   return <th className={cn("h-11 px-4 text-left text-[11px] font-bold uppercase tracking-[0.1em] text-slate-500", className)} {...props} />;

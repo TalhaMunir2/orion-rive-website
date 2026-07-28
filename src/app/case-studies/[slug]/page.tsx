@@ -97,7 +97,7 @@ export default async function CaseStudyDetailPage({
               </span>
             ))}
           </div>
-          <h1 className="mt-6 max-w-5xl text-balance text-4xl font-semibold leading-[1.08] tracking-[-0.045em] sm:text-6xl">
+          <h1 className="mt-6 max-w-5xl text-balance text-4xl font-semibold leading-[1.07] tracking-[-0.045em] sm:text-6xl lg:text-7xl">
             {item.title}
           </h1>
           <p className="mt-7 max-w-3xl text-lg leading-8 text-slate-300">

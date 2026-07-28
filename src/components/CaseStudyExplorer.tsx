@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useMemo, useState } from "react";
 
 import type { CaseStudy } from "../../lib/insights";
+import EmptyState from "./EmptyState";
 
 export default function CaseStudyExplorer({
   caseStudies,
@@ -133,12 +134,11 @@ export default function CaseStudyExplorer({
           ))}
         </div>
       ) : (
-        <div className="mt-8 rounded-2xl border border-dashed border-slate-300 bg-white p-12 text-center">
-          <p className="font-semibold text-slate-800">No matching case studies</p>
-          <p className="mt-2 text-sm text-slate-500">
-            Try a broader search or clear one of the filters.
-          </p>
-        </div>
+        <div className="mt-8"><EmptyState
+          title="No case studies match your filters"
+          description="Try a broader search or reset the industry and service filters to view every customer outcome."
+          action={<button type="button" onClick={() => { setSearch(""); setIndustry("All industries"); setServiceType("All services"); }} className="rounded-xl bg-slate-950 px-4 py-2.5 text-sm font-semibold text-white hover:bg-sky-700">Clear filters</button>}
+        /></div>
       )}
     </>
   );
@@ -189,7 +189,7 @@ function Visual({
   const gradients = [
     "from-blue-950 via-slate-900 to-sky-700",
     "from-slate-950 via-blue-950 to-cyan-700",
-    "from-indigo-950 via-slate-900 to-blue-700",
+    "from-slate-950 via-slate-900 to-blue-700",
   ];
 
   return (

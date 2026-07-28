@@ -70,9 +70,9 @@ export default function AdminLoginPage() {
           <p className="text-xs font-bold uppercase tracking-[0.2em] text-sky-300">
             Orion Rive Control Center
           </p>
-          <h1 className="mt-5 text-5xl font-semibold leading-[1.08] tracking-[-0.04em] text-white">
+          <h2 className="mt-5 text-5xl font-semibold leading-[1.08] tracking-[-0.04em] text-white">
             Secure access to your digital operations.
-          </h1>
+          </h2>
           <p className="mt-6 max-w-lg text-lg leading-8 text-slate-300">
             Manage content, customer engagement, and enterprise experiences
             from one protected workspace.
@@ -121,9 +121,9 @@ export default function AdminLoginPage() {
               <p className="text-xs font-bold uppercase tracking-[0.18em] text-sky-700">
                 Admin portal
               </p>
-              <h2 className="mt-3 text-3xl font-semibold tracking-[-0.03em] text-slate-950">
+              <h1 className="mt-3 text-3xl font-semibold tracking-[-0.03em] text-slate-950">
                 Welcome back
-              </h2>
+              </h1>
               <p className="mt-2 text-sm leading-6 text-slate-600">
                 Sign in with your authorized administrator account.
               </p>

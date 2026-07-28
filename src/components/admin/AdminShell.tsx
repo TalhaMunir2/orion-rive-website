@@ -51,7 +51,7 @@ export default function AdminShell({ children, email, role }: { children: ReactN
   );
 
   return (
-    <div className="min-h-screen bg-[#f6f8fb] text-slate-950">
+    <div className="min-h-screen bg-[#f7f9fc] text-slate-950">
       <aside className="fixed inset-y-0 left-0 z-40 hidden w-64 lg:block">{sidebar}</aside>
       <div className="lg:pl-64">
         <header className="sticky top-0 z-30 flex h-16 items-center justify-between border-b border-slate-200 bg-white/95 px-5 backdrop-blur lg:px-8">

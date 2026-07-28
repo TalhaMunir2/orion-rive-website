@@ -72,7 +72,7 @@ export default async function JobDetailPage({ params }: { params: { slug: string
               <span key={item} className="rounded-full border border-white/15 bg-white/[0.07] px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.14em] text-sky-200">{item}</span>
             ))}
           </div>
-          <h1 className="mt-6 max-w-5xl text-balance text-4xl font-semibold tracking-[-0.045em] sm:text-6xl">{job.title}</h1>
+          <h1 className="mt-6 max-w-5xl text-balance text-4xl font-semibold leading-[1.07] tracking-[-0.045em] sm:text-6xl lg:text-7xl">{job.title}</h1>
           <div className="mt-6 flex flex-wrap gap-x-8 gap-y-3 text-sm text-slate-300">
             <span>{job.location}</span>
             <span>Posted {formatDate(job.postedAt)}</span>

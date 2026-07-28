@@ -6,6 +6,7 @@ import { Badge } from "../ui/badge";
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from "../ui/dialog";
 import { Input } from "../ui/input";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../ui/table";
+import EmptyState from "../EmptyState";
 
 type SortKey = "full_name" | "job_title" | "email" | "created_at";
 
@@ -35,7 +36,23 @@ export default function ApplicationsTable({ applications }: { applications: JobA
         <Input aria-label="Search job applications" value={search} onChange={(event) => setSearch(event.target.value)} placeholder="Search applicant, position, email, or cover letter" className="max-w-md" />
         <p className="text-xs text-slate-500">{filtered.length} of {applications.length} applications</p>
       </div>
-      <div className="overflow-x-auto">
+      <div className="space-y-3 p-4 md:hidden">
+        {filtered.map((row) => (
+          <article key={row.id} className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
+            <button type="button" onClick={() => setSelected(row)} className="w-full text-left">
+              <div className="flex items-start justify-between gap-3">
+                <div className="min-w-0"><h2 className="truncate text-sm font-semibold text-slate-950">{row.full_name}</h2><p className="mt-1 truncate text-xs text-slate-500">{row.email}</p></div>
+                <span className="shrink-0 text-[10px] font-medium text-slate-500">{formatDate(row.created_at)}</span>
+              </div>
+              <Badge className="mt-3">{row.job_title}</Badge>
+              <span className="mt-4 block text-xs font-semibold text-sky-700">View application →</span>
+            </button>
+            {row.signed_resume_url && <a href={row.signed_resume_url} target="_blank" rel="noreferrer" className="mt-3 inline-flex min-h-10 items-center rounded-lg border border-slate-200 px-3 text-xs font-semibold text-slate-700 hover:border-sky-200 hover:text-sky-700">Open resume PDF</a>}
+          </article>
+        ))}
+        {filtered.length === 0 && <EmptyState compact title="No matching applications" description="Adjust your search to review candidates in the current talent pipeline." />}
+      </div>
+      <div className="hidden overflow-x-auto md:block">
         <Table>
           <TableHeader><TableRow>
             <SortableHead label="Applicant" field="full_name" current={sortKey} ascending={ascending} onSort={sort} />
@@ -56,7 +73,7 @@ export default function ApplicationsTable({ applications }: { applications: JobA
             ))}
           </TableBody>
         </Table>
-        {filtered.length === 0 && <p className="p-12 text-center text-sm text-slate-500">No applications match your search.</p>}
+        {filtered.length === 0 && <div className="p-6"><EmptyState compact title="No matching applications" description="Adjust your search to review candidates in the current talent pipeline." /></div>}
       </div>
 
       <Dialog open={Boolean(selected)} onOpenChange={(open) => !open && setSelected(null)}>

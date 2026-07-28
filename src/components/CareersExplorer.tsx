@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useMemo, useState } from "react";
 
 import type { JobOpening } from "../../lib/careers";
+import EmptyState from "./EmptyState";
 
 export default function CareersExplorer({ jobs }: { jobs: JobOpening[] }) {
   const [department, setDepartment] = useState("All departments");
@@ -73,19 +74,11 @@ export default function CareersExplorer({ jobs }: { jobs: JobOpening[] }) {
       </div>
 
       {filtered.length === 0 && (
-        <div className="mt-7 rounded-2xl border border-dashed border-slate-300 bg-white p-12 text-center">
-          <p className="font-semibold text-slate-800">No positions match these filters.</p>
-          <button
-            type="button"
-            onClick={() => {
-              setDepartment("All departments");
-              setLocation("All locations");
-            }}
-            className="mt-3 text-sm font-semibold text-sky-700"
-          >
-            Clear filters
-          </button>
-        </div>
+        <div className="mt-7"><EmptyState
+          title="No open positions match these filters"
+          description="Reset the department and location filters to review all active opportunities at Orion Rive."
+          action={<button type="button" onClick={() => { setDepartment("All departments"); setLocation("All locations"); }} className="rounded-xl bg-slate-950 px-4 py-2.5 text-sm font-semibold text-white hover:bg-sky-700">Clear filters</button>}
+        /></div>
       )}
     </>
   );

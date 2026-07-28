@@ -5,7 +5,10 @@ import { createClient } from "../../../lib/supabase/server";
 import AdminShell from "../../components/admin/AdminShell";
 
 export const dynamic = "force-dynamic";
-export const metadata: Metadata = { title: "Admin | Orion Rive", robots: { index: false, follow: false } };
+export const metadata: Metadata = {
+  title: "Admin",
+  robots: { index: false, follow: false },
+};
 
 export default async function AdminLayout({ children }: { children: ReactNode }) {
   const supabase = await createClient();

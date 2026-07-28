@@ -8,6 +8,7 @@ import { Badge } from "../ui/badge";
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from "../ui/dialog";
 import { Input } from "../ui/input";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../ui/table";
+import EmptyState from "../EmptyState";
 
 type SortKey = "name" | "company" | "email" | "country" | "created_at" | "status";
 
@@ -55,7 +56,28 @@ export default function ContactRequestsTable({ requests }: { requests: ContactRe
         <p className="text-xs text-slate-500">{filtered.length} of {rows.length} requests</p>
       </div>
       {statusError && <p className="border-b border-red-200 bg-red-50 px-5 py-3 text-sm text-red-700">{statusError}</p>}
-      <div className="overflow-x-auto">
+      <div className="space-y-3 p-4 md:hidden">
+        {filtered.map((row) => (
+          <article key={row.id} className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
+            <button type="button" onClick={() => setSelected(row)} className="w-full text-left">
+              <div className="flex items-start justify-between gap-3">
+                <div className="min-w-0"><h2 className="truncate text-sm font-semibold text-slate-950">{row.name}</h2><p className="mt-1 truncate text-xs text-slate-500">{row.company} · {row.country}</p></div>
+                <span className="shrink-0 text-[10px] font-medium text-slate-500">{formatDate(row.created_at)}</span>
+              </div>
+              <p className="mt-3 line-clamp-2 text-xs leading-5 text-slate-600">{row.message}</p>
+              <span className="mt-3 block text-xs font-semibold text-sky-700">View full request →</span>
+            </button>
+            <label className="mt-4 block border-t border-slate-100 pt-3 text-[10px] font-bold uppercase tracking-[0.1em] text-slate-500">
+              Status
+              <select aria-label={`Update status for ${row.name}`} value={row.status || "New"} disabled={isPending} onChange={(event) => changeStatus(row.id, event.target.value as ContactStatus)} className="mt-2 h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-xs font-semibold outline-none focus:border-sky-500 focus:ring-2 focus:ring-sky-100">
+                {contactStatuses.map((status) => <option key={status}>{status}</option>)}
+              </select>
+            </label>
+          </article>
+        ))}
+        {filtered.length === 0 && <EmptyState compact title="No matching contact requests" description="Adjust your search to review inbound customer opportunities." />}
+      </div>
+      <div className="hidden overflow-x-auto md:block">
         <Table>
           <TableHeader><TableRow>
             <SortableHead label="Name" field="name" current={sortKey} ascending={ascending} onSort={sort} />
@@ -82,7 +104,7 @@ export default function ContactRequestsTable({ requests }: { requests: ContactRe
             ))}
           </TableBody>
         </Table>
-        {filtered.length === 0 && <p className="p-12 text-center text-sm text-slate-500">No contact requests match your search.</p>}
+        {filtered.length === 0 && <div className="p-6"><EmptyState compact title="No matching contact requests" description="Adjust your search to review inbound customer opportunities." /></div>}
       </div>
 
       <Dialog open={Boolean(selected)} onOpenChange={(open) => !open && setSelected(null)}>
