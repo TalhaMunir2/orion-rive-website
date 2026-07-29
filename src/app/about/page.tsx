@@ -12,7 +12,8 @@ import {
 export const revalidate = 60;
 export const metadata = createPageMetadata({
   title: "About Our Enterprise Technology Firm | Orion Rive",
-  description: "Meet Orion Rive, an enterprise consulting firm helping technology leaders modernize operations through platforms, AI, cloud, and engineering.",
+  description:
+    "Meet Orion Rive, an enterprise consulting firm helping technology leaders modernize operations through platforms, AI, cloud, and engineering.",
   path: "/about",
 });
 
@@ -22,11 +23,12 @@ type TeamMember = {
   role?: string;
   bio?: string;
   photo?: unknown;
+  linkedinUrl?: string;
 };
 
 const teamQuery = groq`
   *[_type == "teamMember"] | order(name asc) {
-    _id, name, role, bio, photo
+    _id, name, role, bio, photo, linkedinUrl
   }
 `;
 
@@ -69,16 +71,16 @@ export default async function AboutPage() {
           <div className="space-y-6 text-lg leading-8 text-slate-600">
             <p>
               Orion Rive was founded on a straightforward observation: large
-              organizations rarely struggle because they lack technology.
-              They struggle because platforms, data, teams, and decisions are
+              organizations rarely struggle because they lack technology. They
+              struggle because platforms, data, teams, and decisions are
               disconnected from the work that creates value.
             </p>
             <p>
               We bring together ServiceNow expertise, AI engineering, cloud
               modernization, and custom product development to solve that
               problem at its source. Our teams work alongside business and
-              technology leaders—from initial operating-model decisions
-              through implementation, adoption, and continuous improvement.
+              technology leaders—from initial operating-model decisions through
+              implementation, adoption, and continuous improvement.
             </p>
             <p>
               The result is not another isolated system. It is a more connected
@@ -135,12 +137,36 @@ export default async function AboutPage() {
           </div>
           <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {[
-              ["◎", "Outcomes over activity", "We define success in business terms and keep delivery anchored to the measures executives and operators care about."],
-              ["◇", "Clarity builds trust", "We communicate plainly, surface risk early, and make decisions visible so stakeholders never have to guess where work stands."],
-              ["△", "Design for adoption", "A technically correct solution that people avoid is not a solution. We design around real users, workflows, and incentives."],
-              ["↗", "Engineer for change", "We favor modular architectures, disciplined governance, and maintainable patterns that can evolve with the enterprise."],
-              ["✦", "Curiosity with rigor", "We question assumptions and explore emerging technology, then apply the controls required for enterprise use."],
-              ["⊙", "Ownership end to end", "We take responsibility beyond launch—through quality, enablement, measurable value, and continuous improvement."],
+              [
+                "◎",
+                "Outcomes over activity",
+                "We define success in business terms and keep delivery anchored to the measures executives and operators care about.",
+              ],
+              [
+                "◇",
+                "Clarity builds trust",
+                "We communicate plainly, surface risk early, and make decisions visible so stakeholders never have to guess where work stands.",
+              ],
+              [
+                "△",
+                "Design for adoption",
+                "A technically correct solution that people avoid is not a solution. We design around real users, workflows, and incentives.",
+              ],
+              [
+                "↗",
+                "Engineer for change",
+                "We favor modular architectures, disciplined governance, and maintainable patterns that can evolve with the enterprise.",
+              ],
+              [
+                "✦",
+                "Curiosity with rigor",
+                "We question assumptions and explore emerging technology, then apply the controls required for enterprise use.",
+              ],
+              [
+                "⊙",
+                "Ownership end to end",
+                "We take responsibility beyond launch—through quality, enablement, measurable value, and continuous improvement.",
+              ],
             ].map(([icon, title, description]) => (
               <article
                 key={title}
@@ -171,9 +197,9 @@ export default async function AboutPage() {
               </h2>
             </div>
             <p className="max-w-md text-sm leading-7 text-slate-400">
-              Our leadership team combines enterprise consulting discipline
-              with the accountability of people who have built and operated
-              complex technology environments.
+              Our leadership team combines enterprise consulting discipline with
+              the accountability of people who have built and operated complex
+              technology environments.
             </p>
           </div>
 
@@ -209,7 +235,28 @@ export default async function AboutPage() {
                     </div>
                   )}
                   <div className="p-6">
-                    <h3 className="text-xl font-semibold">{member.name}</h3>
+                    <div className="flex items-start justify-between gap-4">
+                      <h3 className="text-xl font-semibold">{member.name}</h3>
+                      {member.linkedinUrl && (
+                        <a
+                          href={member.linkedinUrl}
+                          target="_blank"
+                          rel="noreferrer"
+                          aria-label={`View ${member.name}'s LinkedIn profile`}
+                          title={`View ${member.name}'s LinkedIn profile`}
+                          className="grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-[#0A66C2] text-white shadow-lg shadow-black/20 transition duration-200 hover:-translate-y-0.5 hover:bg-[#0958a9] focus:outline-none focus:ring-2 focus:ring-sky-300 focus:ring-offset-2 focus:ring-offset-slate-950"
+                        >
+                          <svg
+                            viewBox="0 0 24 24"
+                            className="h-[18px] w-[18px]"
+                            fill="currentColor"
+                            aria-hidden="true"
+                          >
+                            <path d="M6.5 8.2H3.1V19h3.4V8.2ZM4.8 3a2 2 0 1 0 0 4 2 2 0 0 0 0-4ZM19.9 12.8c0-3.3-1.8-4.9-4.2-4.9-1.9 0-2.8 1.1-3.3 1.8V8.2H9V19h3.4v-5.3c0-1.4.3-2.8 2.1-2.8 1.8 0 1.8 1.7 1.8 2.9V19h3.4l.2-6.2Z" />
+                          </svg>
+                        </a>
+                      )}
+                    </div>
                     {member.role && (
                       <p className="mt-1 text-sm font-medium text-sky-300">
                         {member.role}
