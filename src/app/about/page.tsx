@@ -27,31 +27,17 @@ type TeamMember = {
 };
 
 const teamQuery = groq`
-  *[_type == "teamMember"] {
+  *[_type == "teamMember"] | order(name dsc) {
     _id, name, role, bio, photo, linkedinUrl
   }
 `;
 
 async function getTeam() {
   try {
-    const team = await sanityClient.fetch<TeamMember[]>(
+    return await sanityClient.fetch<TeamMember[]>(
       teamQuery,
       {},
       { next: { revalidate } },
-    );
-
-    const teamOrder = [
-      "Muhammad Talha",
-      "Fiza Arif",
-      "Muhammad Umar",
-      "Muhammad Sameer",
-      "Khadija",
-      "Muhammad Tayyab",
-    ];
-
-    return team.sort(
-      (a, b) =>
-        teamOrder.indexOf(a.name) - teamOrder.indexOf(b.name),
     );
   } catch (error) {
     console.error("Unable to load leadership profiles from Sanity:", error);
@@ -167,7 +153,7 @@ export default async function AboutPage() {
                 "A technically correct solution that people avoid is not a solution. We design around real users, workflows, and incentives.",
               ],
               [
-                "↗",
+                "↗️",
                 "Engineer for change",
                 "We favor modular architectures, disciplined governance, and maintainable patterns that can evolve with the enterprise.",
               ],
@@ -231,7 +217,7 @@ export default async function AboutPage() {
                         .height(560)
                         .fit("crop")
                         .url()}
-                      alt={`${member.name}, ${member.role || "Orion Rive leadership team member"}`}
+                      alt={${member.name}, ${member.role || "Orion Rive leadership team member"}}
                       width={720}
                       height={560}
                       sizes="(min-width: 1024px) 384px, (min-width: 640px) 50vw, 100vw"
@@ -256,8 +242,8 @@ export default async function AboutPage() {
                           href={member.linkedinUrl}
                           target="_blank"
                           rel="noreferrer"
-                          aria-label={`View ${member.name}'s LinkedIn profile`}
-                          title={`View ${member.name}'s LinkedIn profile`}
+                          aria-label={View ${member.name}'s LinkedIn profile}
+                          title={View ${member.name}'s LinkedIn profile}
                           className="grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-[#0A66C2] text-white shadow-lg shadow-black/20 transition duration-200 hover:-translate-y-0.5 hover:bg-[#0958a9] focus:outline-none focus:ring-2 focus:ring-sky-300 focus:ring-offset-2 focus:ring-offset-slate-950"
                         >
                           <svg
