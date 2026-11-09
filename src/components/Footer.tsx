@@ -24,19 +24,19 @@ const insightLinks = [
 const socialLinks = [
   {
     label: "LinkedIn",
-    href: "",
+    href: "https://www.linkedin.com/company/orion-rive-solutions/",
     icon: "linkedin",
     color: "bg-[#0A66C2] text-white hover:bg-[#0958a9]",
   },
   {
     label: "Facebook",
-    href: "",
+    href: "https://www.facebook.com/profile.php?id=61595834760200",
     icon: "facebook",
     color: "bg-[#1877F2] text-white hover:bg-[#1266d4]",
   },
   {
     label: "Instagram",
-    href: "",
+    href: "https://www.instagram.com/orionrive/",
     icon: "instagram",
     color:
       "bg-gradient-to-br from-[#833AB4] via-[#E1306C] to-[#FCAF45] text-white hover:brightness-110",
@@ -214,10 +214,10 @@ export default function Footer() {
               operational impact.
             </p>
             <a
-              href="mailto:hello@orionrive.com"
+              href="mailto:orion.rivesolutions@gmail.com"
               className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-sky-300 transition hover:text-sky-200"
             >
-              hello@orionrive.com <span aria-hidden="true">↗</span>
+              orion.rivesolutions@gmail.com <span aria-hidden="true">↗</span>
             </a>
           </div>
 
