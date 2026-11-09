@@ -27,17 +27,31 @@ type TeamMember = {
 };
 
 const teamQuery = groq`
-  *[_type == "teamMember"] | order(name dsc) {
+  *[_type == "teamMember"] {
     _id, name, role, bio, photo, linkedinUrl
   }
 `;
 
 async function getTeam() {
   try {
-    return await sanityClient.fetch<TeamMember[]>(
+    const team = await sanityClient.fetch<TeamMember[]>(
       teamQuery,
       {},
       { next: { revalidate } },
+    );
+
+    const teamOrder = [
+      "Muhammad Talha",
+      "Fiza Arif",
+      "Muhammad Umar",
+      "Muhammad Sameer",
+      "Khadija",
+      "Muhammad Tayyab",
+    ];
+
+    return team.sort(
+      (a, b) =>
+        teamOrder.indexOf(a.name) - teamOrder.indexOf(b.name),
     );
   } catch (error) {
     console.error("Unable to load leadership profiles from Sanity:", error);
