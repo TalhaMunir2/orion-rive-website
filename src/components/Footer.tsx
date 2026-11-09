@@ -43,7 +43,7 @@ const socialLinks = [
   },
   {
     label: "X (Twitter)",
-    href: "",
+    href: "https://x.com/talhamunir281",
     icon: "x",
     color: "bg-white text-black hover:bg-slate-200",
   },
