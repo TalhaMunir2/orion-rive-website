@@ -27,7 +27,7 @@ type TeamMember = {
 };
 
 const teamQuery = groq`
-  *[_type == "teamMember"] | order(name dsc) {
+  *[_type == "teamMember"] | order(name desc) {
     _id, name, role, bio, photo, linkedinUrl
   }
 `;
