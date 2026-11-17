@@ -32,13 +32,36 @@ const teamQuery = groq`
   }
 `;
 
+// async function getTeam() {
+//   try {
+//     return await sanityClient.fetch<TeamMember[]>(
+//       teamQuery,
+//       {},
+//       { next: { revalidate } },
+//     );
+//   } catch (error) {
+//     console.error("Unable to load leadership profiles from Sanity:", error);
+//     return [];
+//   }
+// }
 async function getTeam() {
   try {
-    return await sanityClient.fetch<TeamMember[]>(
+    const members = await sanityClient.fetch<TeamMember[]>(
       teamQuery,
       {},
       { next: { revalidate } },
     );
+
+    return members.sort((a, b) => {
+      const indexA = teamOrder.indexOf(a.name.trim());
+      const indexB = teamOrder.indexOf(b.name.trim());
+
+      // Names not included in teamOrder will appear at the end.
+      if (indexA === -1) return 1;
+      if (indexB === -1) return -1;
+
+      return indexA - indexB;
+    });
   } catch (error) {
     console.error("Unable to load leadership profiles from Sanity:", error);
     return [];
