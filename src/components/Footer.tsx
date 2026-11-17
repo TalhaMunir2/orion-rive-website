@@ -99,44 +99,36 @@ function SocialIcon({ name }: { name: SocialIconName }) {
   );
 }
 
+
 function SocialLinks() {
   return (
     <div className="sm:text-right">
       <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-slate-500">
         Follow Orion Rive
       </p>
+
       <div className="mt-3 flex flex-wrap gap-2.5 sm:justify-end">
         {socialLinks.map((social) => {
           const className = `grid h-10 w-10 place-items-center rounded-xl border border-white/10 shadow-lg shadow-black/15 transition duration-200 hover:-translate-y-0.5 hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-sky-400 focus:ring-offset-2 focus:ring-offset-slate-950 ${social.color}`;
 
-          return social.href ? (
+          return (
             <a
               key={social.label}
               href={social.href}
               target="_blank"
-              rel="noreferrer"
+              rel="noopener noreferrer"
               aria-label={social.label}
               className={className}
             >
               <SocialIcon name={social.icon} />
             </a>
-          ) : (
-            <span
-              key={social.label}
-              role="link"
-              aria-label={`${social.label} link coming soon`}
-              aria-disabled="true"
-              title={`${social.label} link coming soon`}
-              className={`${className} cursor-not-allowed`}
-            >
-              <SocialIcon name={social.icon} />
-            </span>
           );
         })}
       </div>
     </div>
   );
 }
+
 
 function FooterLinks({ title, links }: { title: string; links: string[][] }) {
   return (
