@@ -26,6 +26,15 @@ type TeamMember = {
   linkedinUrl?: string;
 };
 
+const teamOrder = [
+  "Muhammad Talha Munir",
+  "Muhammad Umar",
+  "Fiza Arif",
+  "Muhammad Sameer",
+  "Muhammad Tayyab",
+  "Khadija Nawaz",
+];
+
 const teamQuery = groq`
   *[_type == "teamMember"] | order(name desc) {
     _id, name, role, bio, photo, linkedinUrl
